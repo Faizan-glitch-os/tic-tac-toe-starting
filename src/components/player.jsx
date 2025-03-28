@@ -6,17 +6,22 @@ export default function Player({ name, symbol }) {
   function editHandler() {
     setIsEditing((editing) => !editing);
   }
+
+  let playerTag = <span className="player-name">{name}</span>;
+  let buttonTitle = "Edit";
+
+  if (isEditing) {
+    playerTag = <input type="text" value={name} />;
+    buttonTitle = "Save";
+  }
+
   return (
     <li>
       <span className="player">
-        {isEditing ? (
-          <input type="text" value={name} />
-        ) : (
-          <span className="player-name">{name}</span>
-        )}
+        {playerTag}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button onClick={editHandler}>{isEditing ? "Save" : "Edit"}</button>
+      <button onClick={editHandler}>{buttonTitle}</button>
     </li>
   );
 }
