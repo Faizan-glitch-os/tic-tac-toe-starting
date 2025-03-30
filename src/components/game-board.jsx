@@ -6,7 +6,10 @@ let initialGameBoard = [
   [null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard({
+  handleActivePlayerSymbol,
+  activePlayerSymbol,
+}) {
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
   function handleSymbol(rowIndex, colIndex) {
@@ -14,9 +17,11 @@ export default function GameBoard() {
       const updatedGameBoard = [
         ...oldGameBoard.map((innerArray) => [...innerArray]),
       ];
-      updatedGameBoard[rowIndex][colIndex] = "X";
+      updatedGameBoard[rowIndex][colIndex] = activePlayerSymbol;
       return updatedGameBoard;
     });
+
+    handleActivePlayerSymbol();
   }
   return (
     <ol id="game-board">
