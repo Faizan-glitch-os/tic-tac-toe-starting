@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 let initialGameBoard = [
   [null, null, null],
   [null, null, null],
@@ -40,6 +38,7 @@ export default function GameBoard({ handleActivePlayerSymbol, turns }) {
                   onClick={() =>
                     handleActivePlayerSymbol(rowIndex, playerSymbolIndex)
                   }
+                  disabled={playerSymbol !== null}
                 >
                   {playerSymbol}
                 </button>
