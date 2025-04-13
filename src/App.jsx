@@ -3,6 +3,7 @@ import Player from "./components/player";
 import GameBoard from "./components/game-board";
 import Log from "./components/log";
 import { WINNING_COMBINATIONS } from "./wining-combinations";
+import GameOver from "./components/game-over";
 
 let initialGameBoard = [
   [null, null, null],
@@ -52,6 +53,8 @@ function App() {
     }
   }
 
+  let draw = gameTurn.length === 9 && !winner;
+
   function handleActivePlayer(rowIndex, playerSymbolIndex) {
     setGameTurn((previousTurn) => {
       let currentPlayer = deriveActivePlayer(previousTurn);
@@ -83,7 +86,7 @@ function App() {
             isActive={activePlayer == "O" ? true : false}
           />
         </ol>
-        {winner && <p>you won!, {winner}</p>}
+        {(winner || draw) && <GameOver winner={winner} />}
         <GameBoard
           handleActivePlayerSymbol={handleActivePlayer}
           board={gameBoard}
