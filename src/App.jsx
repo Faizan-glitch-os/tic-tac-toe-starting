@@ -11,6 +11,8 @@ let initialGameBoard = [
   [null, null, null],
 ];
 
+const initialPlayer = { X: "Player 1", O: "Player 2" };
+
 function deriveActivePlayer(gameTurn) {
   let currentPlayer = "X";
 
@@ -20,21 +22,7 @@ function deriveActivePlayer(gameTurn) {
   return currentPlayer;
 }
 
-function App() {
-  const [gameTurn, setGameTurn] = useState([]);
-  const [player, setPlayer] = useState({ X: "Player 1", O: "Player 2" });
-
-  let activePlayer = deriveActivePlayer(gameTurn);
-
-  let gameBoard = [...initialGameBoard.map((row) => [...row])];
-
-  for (const turn of gameTurn) {
-    const { square, player } = turn;
-    const { row, col } = square;
-
-    gameBoard[row][col] = player;
-  }
-
+function deriveWinner(gameBoard, player) {
   let winner;
 
   for (const combination of WINNING_COMBINATIONS) {
@@ -53,6 +41,29 @@ function App() {
       winner = player[firstSquareSymbol];
     }
   }
+  return winner;
+}
+
+function deriveGameBoard(gameTurn) {
+  let gameBoard = [...initialGameBoard.map((row) => [...row])];
+
+  for (const turn of gameTurn) {
+    const { square, player } = turn;
+    const { row, col } = square;
+
+    gameBoard[row][col] = player;
+  }
+
+  return gameBoard;
+}
+
+function App() {
+  const [gameTurn, setGameTurn] = useState([]);
+  const [player, setPlayer] = useState(initialPlayer);
+
+  let activePlayer = deriveActivePlayer(gameTurn);
+  let gameBoard = deriveGameBoard(gameTurn);
+  let winner = deriveWinner(gameBoard, player);
 
   let draw = gameTurn.length === 9 && !winner;
 
@@ -87,13 +98,13 @@ function App() {
       <div id="game-container">
         <ol id="players" className="highlight-player">
           <Player
-            name="Player 1"
+            name={initialPlayer.X}
             symbol="X"
             isActive={activePlayer == "X" ? true : false}
             onChangName={handlePlayerNameChange}
           />
           <Player
-            name="Player 2"
+            name={initialPlayer.O}
             symbol="O"
             isActive={activePlayer == "O" ? true : false}
             onChangName={handlePlayerNameChange}
